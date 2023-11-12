@@ -4,8 +4,11 @@ const deviceSchema = new mongoose.Schema({
     number: { type: Number, require: true, unique: true },
     name: { type: String },
     type: { type: String },
+    signal: { type: Boolean },
+    battery: { type: Number },
     address: { type: String },
-    position: { type: [Number] },
+    latitude: { type: Number },
+    longitude: { type: Number },
 });
 
 module.exports = mongoose.model('Device', deviceSchema);

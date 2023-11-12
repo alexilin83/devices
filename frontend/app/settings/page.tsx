@@ -2,8 +2,8 @@
 
 export default function Settings() {
   return (
-    <main className="flex min-h-screen">
+    <div>
       настройки
-    </main>
+    </div>
   )
 }
