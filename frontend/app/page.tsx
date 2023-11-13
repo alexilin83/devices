@@ -17,7 +17,7 @@ export default async function Home() {
 
   return (
     <div className='relative w-full h-full'>
-      <div className='absolute inset-y-5 left-5 w-3/12 p-5 bg-white/95 rounded-lg shadow-md z-10'>
+      <div className='absolute inset-y-5 left-5 w-[400px] p-5 bg-white/95 rounded-lg shadow-md z-10'>
         <DevicesList devices={devices} />
       </div>
       <div className='relative w-full h-full z-0'>

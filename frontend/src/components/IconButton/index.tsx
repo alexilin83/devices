@@ -12,17 +12,19 @@ export default function IconButton(props: IconButtonProps) {
 
   return (
     <button
-      className={`flex justify-center items-center transition-all ${
+      className={`flex justify-center items-center rounded-full transition-all ${
         size === "small"
-          ? "w-6 h-6"
+          ? "w-6 h-6 p-1"
           : size === "large"
-          ? "w-10 h-10"
-          : "w-8 h-8"
+          ? "w-10 h-10 p-2"
+          : "w-8 h-8 p-1.5"
       } ${
-        variant === "secondary"
+        variant === "primary"
+          ? "bg-rose-500 text-white hover:bg-rose-600"
+          : variant === "secondary"
           ? "bg-slate-200 text-slate-500 hover:bg-slate-300"
-          : "bg-rose-500 text-white"
-      } rounded-full`}
+          : "hover:bg-slate-200"
+      }`}
       onClick={onClick}
     >
       {children}
