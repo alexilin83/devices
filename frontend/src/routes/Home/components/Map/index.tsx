@@ -1,5 +1,3 @@
-'use client'
-
 import { MapContainer, TileLayer, ZoomControl  } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 

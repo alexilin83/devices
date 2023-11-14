@@ -1,15 +1,10 @@
-"use client";
-
 import { useState } from "react";
-import { Device } from "../../types";
-import IconButton from "../IconButton";
-import Popup from "../Popup";
-import FormControl from "../FormControl";
-import Input from "../Input";
-import Select from "../Select";
+import { Button, Modal } from "antd";
+import CreateDeviceFrom from "../CreateDeviceFrom";
+import { Device } from "../../../../common/types";
+
 import {
   PlusSmallIcon,
-  ListBulletIcon,
   SignalIcon,
   SignalSlashIcon,
   Battery50Icon,
@@ -31,17 +26,14 @@ export default function DevicesList(props: DevicesListProps) {
     <div>
       <div className="flex justify-between items-center mb-5">
         <div className="flex items-center gap-1 text-slate-700">
-          <ListBulletIcon className="h-6 w-6" />
           <h3>Устройства:</h3>
         </div>
         <div>
-          <IconButton
-            variant="secondary"
-            size="small"
+          <Button
             onClick={() => setIsCreateDevicePopupVisible(true)}
           >
             <PlusSmallIcon />
-          </IconButton>
+          </Button>
         </div>
       </div>
       {devices.map(({ number, name, type, signal, battery }: Device) => (
@@ -69,47 +61,22 @@ export default function DevicesList(props: DevicesListProps) {
               <BellIcon className="w-4 h-4" />
             </div>
             <div className="flex gap-1 transition-all">
-              <IconButton variant="secondary" size="small">
+              <Button>
                 <PresentationChartLineIcon />
-              </IconButton>
-              <IconButton variant="secondary" size="small">
+              </Button>
+              <Button>
                 <Cog6ToothIcon />
-              </IconButton>
+              </Button>
             </div>
           </div>
         </div>
       ))}
-      <Popup
+      <Modal
         open={isCreateDevicePopupVisible}
         title="Добавить устройство"
-        onClose={() => setIsCreateDevicePopupVisible(false)}
       >
-        <form action="">
-          <FormControl>
-            <label>Номер</label>
-            <Input name="number" type="number" />
-          </FormControl>
-          <FormControl>
-            <label>Название</label>
-            <Input name="name" type="text" />
-          </FormControl>
-          <FormControl>
-            <label>Тип</label>
-            <Select name="type">
-              <option value="sensor">Sensor</option>
-              <option value="hub">Hub</option>
-            </Select>
-          </FormControl>
-          <FormControl>
-            <label>Долгота</label>
-            <Input name="longitude" type="number" />
-          </FormControl>
-          <FormControl>
-            <label>Широта</label>
-            <Input name="latitude" type="number" />
-          </FormControl>
-        </form>
-      </Popup>
+        <CreateDeviceFrom />        
+      </Modal>
     </div>
   );
 }
