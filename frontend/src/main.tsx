@@ -1,12 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { ConfigProvider } from 'antd';
+import theme from '../src/theme';
 import Layout from './common/components/Layout';
 import HomePage from './routes/Home';
 import ErrorPage from './routes/Error';
 import { getDevices } from './common/actions';
-import './index.css';
 import 'antd/dist/reset.css';
+import './index.css';
 
 const router = createBrowserRouter([
   {
@@ -25,6 +27,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <ConfigProvider theme={theme}>
+      <RouterProvider router={router} />
+    </ConfigProvider>
   </React.StrictMode>,
 )

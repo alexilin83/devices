@@ -1,41 +1,22 @@
-import { useState } from "react";
-import { Button, Modal } from "antd";
-import CreateDeviceFrom from "../CreateDeviceFrom";
+import { Button } from "antd";
 import { Device } from "../../../../common/types";
-
 import {
-  PlusSmallIcon,
   SignalIcon,
   SignalSlashIcon,
   Battery50Icon,
   BellIcon,
-  Cog6ToothIcon,
-  PresentationChartLineIcon,
 } from "@heroicons/react/24/solid";
+import { DashboardFilled, SettingOutlined } from '@ant-design/icons';
 
 interface DevicesListProps {
-  devices: Device[];
+  devices: Device[] | [];
 }
 
 export default function DevicesList(props: DevicesListProps) {
   const { devices } = props;
-  const [isCreateDevicePopupVisible, setIsCreateDevicePopupVisible] =
-    useState(false);
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-5">
-        <div className="flex items-center gap-1 text-slate-700">
-          <h3>Устройства:</h3>
-        </div>
-        <div>
-          <Button
-            onClick={() => setIsCreateDevicePopupVisible(true)}
-          >
-            <PlusSmallIcon />
-          </Button>
-        </div>
-      </div>
+    <>
       {devices.map(({ number, name, type, signal, battery }: Device) => (
         <div
           key={number}
@@ -61,22 +42,12 @@ export default function DevicesList(props: DevicesListProps) {
               <BellIcon className="w-4 h-4" />
             </div>
             <div className="flex gap-1 transition-all">
-              <Button>
-                <PresentationChartLineIcon />
-              </Button>
-              <Button>
-                <Cog6ToothIcon />
-              </Button>
+              <Button shape="circle" size="small" icon={<DashboardFilled />} />
+              <Button shape="circle" size="small" icon={<SettingOutlined />} />
             </div>
           </div>
         </div>
       ))}
-      <Modal
-        open={isCreateDevicePopupVisible}
-        title="Добавить устройство"
-      >
-        <CreateDeviceFrom />        
-      </Modal>
-    </div>
+    </>
   );
 }

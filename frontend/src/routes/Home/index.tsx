@@ -1,40 +1,33 @@
-import React from 'react';
-import { useLoaderData } from 'react-router-dom';
-import DevicesList from './components/DevicesList';
-import Map from './components/Map';
-
-const mapStyles:React.CSSProperties = {
-  position: 'relative',
-  height: '100%',
-  zIndex: 0
-}
-
-const sidePanelStyles:React.CSSProperties = {
-  position: 'absolute',
-  left: '10px',
-  top: '10px',
-  bottom: '10px',
-  width: '400px',
-  padding: '10px',
-  background: 'rgba(255, 255, 255, .9)',
-  borderRadius: '10px',
-  zIndex: 10
-}
+import { useState } from "react";
+import { useLoaderData } from "react-router-dom";
+import { Button, Modal } from "antd";
+import DevicesList from "./components/DevicesList";
+import Map from "./components/Map";
+import CreateDeviceFrom from "../Home/components/CreateDeviceFrom";
+import { PlusOutlined } from '@ant-design/icons';
 
 export default function HomePage() {
-
   const devices = useLoaderData();
-  console.log(devices);
-  
+
+  const [isCreateDevicePopupVisible, setIsCreateDevicePopupVisible] = useState(false);
 
   return (
     <>
-      <div style={sidePanelStyles} className='absolute inset-y-5 left-5 w-[400px] p-5 bg-white/95 rounded-lg shadow-md z-10'>
-        {/* <DevicesList devices={devices} /> */}
+      <div className="absolute inset-y-2 left-2 overflow-auto w-[400px] p-5 bg-white/90 rounded-lg shadow-md z-10">
+        <div className="flex justify-between items-center mb-5">
+          <h3>Устройства:</h3>
+          <div>
+            <Button shape="circle" icon={<PlusOutlined />} size="small" onClick={() => setIsCreateDevicePopupVisible(true)} />
+          </div>
+        </div>
+        {Array.isArray(devices) ? <DevicesList devices={devices} /> : <p>Нет устройств</p>}
       </div>
-      <div style={mapStyles}>
+      <div className="relative h-full z-0">
         <Map />
       </div>
+      <Modal open={isCreateDevicePopupVisible} title="Добавить устройство" onOk={() => setIsCreateDevicePopupVisible(false)} onCancel={() => setIsCreateDevicePopupVisible(false)}>
+        <CreateDeviceFrom />
+      </Modal>
     </>
   );
 }
