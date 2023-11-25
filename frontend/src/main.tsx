@@ -4,8 +4,9 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
 import theme from '../src/theme';
 import Layout from './common/components/Layout';
-import HomePage from './routes/Home';
 import ErrorPage from './routes/Error';
+import HomePage, { action as createDeviceAction } from './routes/Home';
+import SettingsPage from './routes/Settings';
 import { getDevices } from './common/actions';
 import 'antd/dist/reset.css';
 import './index.css';
@@ -19,7 +20,12 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <HomePage />,
-        loader: getDevices
+        loader: getDevices,
+        action: createDeviceAction,
+      },
+      {
+        path: '/settings',
+        element: <SettingsPage />,
       },
     ]
   }

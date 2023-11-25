@@ -1,6 +1,6 @@
 const Device = require('../models/device');
 
-exports.getDevices = async (req, res) => {
+exports.getDevices = async (_, res) => {
     try {
         const devices = await Device.find();
         res.status(201).json(devices);

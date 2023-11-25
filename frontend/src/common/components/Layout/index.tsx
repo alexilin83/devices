@@ -7,8 +7,8 @@ const { Header, Footer, Content } = Layout;
 export default function LayoutWrapper() {
   return (
     <Layout className="h-screen bg-slate-100">
-      <Header className="relative flex items-center h-[80px] px-10 bg-white shadow-md z-10 leading-none">
-        <h1>IoT</h1>
+      <Header className="relative flex items-center px-10 bg-white shadow-md z-10">
+        <h1 className="m-0">IoT</h1>
         <Navigation />
       </Header>
       <Content className="relative">

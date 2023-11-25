@@ -1,5 +1,9 @@
 import { Form, Input, Select } from "antd";
 
+type CreateDeviceFormProps = {
+  form: any;
+}
+
 type FieldType = {
   number: number;
   name: string;
@@ -18,23 +22,24 @@ const initialValues = {
 const typeOptions = [
   {
     value: "sensor",
-    label: "Сенсор"
+    label: "Сенсор",
   },
   {
     value: "hub",
-    label: "Хаб"
-  }
-]
+    label: "Хаб",
+  },
+];
 
-export default function CreateDeviceForm() {
-  // const [state, formAction] = useFormState(createDevice, initialState);
+export default function CreateDeviceForm(props: CreateDeviceFormProps) {
+  const { form } = props;
 
   return (
-    <Form initialValues={initialValues}>
+    <Form form={form} initialValues={initialValues} layout="vertical">
       <Form.Item<FieldType> label="Номер" name="number">
         <Input />
       </Form.Item>
-      <Form.Item<FieldType> label="Название" name="number">
+      <Form.Item<FieldType> label="Название" name="name">
+        <Input />
       </Form.Item>
       <Form.Item<FieldType> label="Тип" name="type">
         <Select options={typeOptions} />
