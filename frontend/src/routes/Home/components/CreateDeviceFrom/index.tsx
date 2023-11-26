@@ -35,7 +35,7 @@ export default function CreateDeviceForm(props: CreateDeviceFormProps) {
 
   return (
     <Form form={form} initialValues={initialValues} layout="vertical">
-      <Form.Item<FieldType> label="Номер" name="number">
+      <Form.Item<FieldType> label="Номер" name="number" rules={[{ required: true }]}>
         <Input />
       </Form.Item>
       <Form.Item<FieldType> label="Название" name="name">

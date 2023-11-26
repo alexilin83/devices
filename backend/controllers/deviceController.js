@@ -1,5 +1,15 @@
 const Device = require('../models/device');
 
+exports.createDevice = async (req, res) => {
+    try {
+        const device = new Device(req.body);
+        await device.save();
+        res.status(201).json(device);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+}
+
 exports.getDevices = async (_, res) => {
     try {
         const devices = await Device.find();
@@ -9,10 +19,9 @@ exports.getDevices = async (_, res) => {
     }
 }
 
-exports.createDevice = async (req, res) => {
+exports.getDevice = async (req, res) => {
     try {
-        const device = new Device(req.body);
-        await device.save();
+        const device = await Device.findById(req.params.id);
         res.status(201).json(device);
     } catch (error) {
         res.status(400).json({ message: error.message });

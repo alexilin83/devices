@@ -17,3 +17,11 @@ export async function getDevices() {
   }
   return res.json();
 }
+
+export async function getDevice(id: string) {
+  const res = await fetch(`http://localhost:5000/api/devices/${id}`);
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+  return res.json();
+}

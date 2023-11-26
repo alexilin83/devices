@@ -9,5 +9,6 @@ router.get('/', (req, res) => {
 });
 router.get('/devices', deviceController.getDevices);
 router.post('/devices', upload.none(), deviceController.createDevice);
+router.get('/devices/:id', deviceController.getDevice);
 
 module.exports = router;

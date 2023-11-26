@@ -11,7 +11,7 @@ export default function LayoutWrapper() {
         <h1 className="m-0">IoT</h1>
         <Navigation />
       </Header>
-      <Content className="relative">
+      <Content className="relative z-0">
         <Outlet />
       </Content>
       <Footer className="flex items-center h-[60px] px-10 bg-white text-slate-500">
