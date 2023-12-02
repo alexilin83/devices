@@ -1,13 +1,20 @@
-import { useParams, useLoaderData, ActionFunctionArgs } from "react-router-dom";
+import { useParams, useLoaderData, ActionFunctionArgs, redirect } from "react-router-dom";
 import { LatLngBoundsExpression } from "leaflet";
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import MapOverlay from "./components/MapOverlay";
-import { createDevice } from "../../common/actions";
+import { createDevice, getDevice } from "../../common/actions";
 import "leaflet/dist/leaflet.css";
+
+export async function loader(data: ActionFunctionArgs) {
+  const { params } = data;
+  const id = params.id || "";
+  const device = await getDevice(id);
+  return device;
+}
 
 export async function action(data: ActionFunctionArgs) {
   const device = await createDevice(data);
-  return { device };
+  return redirect(`/devices/${device._id}`);
 }
 
 export default function HomePage() {

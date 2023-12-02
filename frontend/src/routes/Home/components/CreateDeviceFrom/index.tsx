@@ -11,27 +11,28 @@ type FieldType = {
   longitude: number;
   latitude: number;
 };
-const initialValues = {
-  number: "",
-  name: "",
-  type: "",
-  longitude: "",
-  latitude: "",
-};
-
-const typeOptions = [
-  {
-    value: "sensor",
-    label: "Сенсор",
-  },
-  {
-    value: "hub",
-    label: "Хаб",
-  },
-];
 
 export default function CreateDeviceForm(props: CreateDeviceFormProps) {
   const { form } = props;
+
+  const initialValues = {
+    number: "",
+    name: "",
+    type: "",
+    longitude: "",
+    latitude: "",
+  };
+  
+  const typeOptions = [
+    {
+      value: "sensor",
+      label: "Сенсор",
+    },
+    {
+      value: "hub",
+      label: "Хаб",
+    },
+  ];
 
   return (
     <Form form={form} initialValues={initialValues} layout="vertical">

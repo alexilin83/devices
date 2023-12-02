@@ -6,7 +6,7 @@ const { Header, Footer, Content } = Layout;
 
 export default function LayoutWrapper() {
   return (
-    <Layout className="h-screen bg-slate-100">
+    <Layout className="h-screen bg-slate-100 text-slate-500">
       <Header className="relative flex items-center px-10 bg-white shadow-md z-10">
         <h1 className="m-0">IoT</h1>
         <Navigation />
@@ -14,7 +14,7 @@ export default function LayoutWrapper() {
       <Content className="relative z-0">
         <Outlet />
       </Content>
-      <Footer className="flex items-center h-[60px] px-10 bg-white text-slate-500">
+      <Footer className="flex items-center h-[60px] px-10 bg-white">
         <span>© 2023</span>
       </Footer>
     </Layout>

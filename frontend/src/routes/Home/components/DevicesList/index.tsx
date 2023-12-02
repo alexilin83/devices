@@ -41,6 +41,9 @@ export default function DevicesList() {
       key: "settings",
       icon: <SettingOutlined />,
       label: "Настройки",
+      onClick: () => {
+        navigate(`/devices/${item._id}/edit`)
+      }
     },
   ];
 
@@ -53,7 +56,7 @@ export default function DevicesList() {
         return (
           <div
             key={_id}
-            className="flex justify-between items-center overflow-hidden mb-1 p-2 bg-white rounded-md shadow-sm text-slate-800 group"
+            className="flex justify-between items-center overflow-hidden mb-1 p-2 bg-white rounded-md shadow-sm group"
           >
             <div className="flex grow items-center gap-2 overflow-hidden text-xs">
               <div className="basis-2/4">

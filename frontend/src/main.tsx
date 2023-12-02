@@ -5,8 +5,9 @@ import { ConfigProvider } from "antd";
 import theme, { validateMessages } from "../src/theme";
 import Layout from "./common/components/Layout";
 import ErrorPage from "./routes/Error";
-import HomePage, { action as createDeviceAction } from "./routes/Home";
-import DeviceDashboard, { loader as deviceLoader } from "./routes/Home/components/DeviceDashboard";
+import HomePage, { action as createDeviceAction, loader as deviceLoader } from "./routes/Home";
+import DeviceDashboard, { action as deleteDeviceAction } from "./routes/Home/components/DeviceDashboard";
+import EditDeviceForm, { action as updateDeviceAction } from "./routes/Home/components/EditDeviceFrom";
 import SettingsPage from "./routes/Settings";
 import { getDevices } from "./common/actions";
 import "antd/dist/reset.css";
@@ -25,9 +26,16 @@ const router = createBrowserRouter([
         action: createDeviceAction,
         children: [
           {
-            path: "/devices/:deviceId",
+            path: "/devices/:id",
             element: <DeviceDashboard />,
             loader: deviceLoader,
+            action: deleteDeviceAction,
+          },
+          {
+            path: "/devices/:id/edit",
+            element: <EditDeviceForm />,
+            loader: deviceLoader,
+            action: updateDeviceAction,
           },
         ],
       },

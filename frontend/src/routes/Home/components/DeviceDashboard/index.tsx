@@ -1,11 +1,12 @@
 import { ReactNode } from "react";
-import { useLoaderData, ActionFunctionArgs } from "react-router-dom";
-import { Button, Col, Row } from "antd";
+import { useParams, useLoaderData, useNavigate, useSubmit, redirect, ActionFunctionArgs } from "react-router-dom";
+import { useMap } from "react-leaflet";
+import { Button, Col, Row, Popconfirm, Space } from "antd";
+import { SettingOutlined, CloseOutlined, DeleteOutlined } from "@ant-design/icons";
 import { Line, Liquid, Pie, Column } from "@ant-design/plots";
-import { SettingOutlined } from "@ant-design/icons";
-import { getDevice } from "../../../../common/actions";
 import { Device } from "../../../../common/types";
 import { deviceTypes } from "../../../../common/constants";
+import { deleteDevice } from "../../../../common/actions";
 
 type BoxProps = {
   children: ReactNode;
@@ -50,11 +51,9 @@ const data = [
   },
 ];
 
-export async function loader(data: ActionFunctionArgs) {
-  const { params } = data;
-  const id = params.deviceId || "";
-  const device = await getDevice(id);
-  return device;
+export async function action(data: ActionFunctionArgs) {
+  await deleteDevice(data);
+  return redirect(`/`);
 }
 
 function Box(props: BoxProps) {
@@ -64,7 +63,13 @@ function Box(props: BoxProps) {
 }
 
 export default function DeviceDashboard() {
+  const { id } = useParams();
   const device = useLoaderData();
+
+  const navigate = useNavigate();
+  const submit = useSubmit();
+
+  const map = useMap();
 
   if (!device) return false;
 
@@ -88,46 +93,86 @@ export default function DeviceDashboard() {
 
   const columnConfig = {
     data,
-    xField: 'type',
-    yField: 'value',
+    xField: "type",
+    yField: "value",
   };
 
+  const handleMouseOver = () => {
+    map.dragging.disable();
+    map.scrollWheelZoom.disable();
+  }
+  const handleMouseOut = () => {
+    map.dragging.enable();
+    map.scrollWheelZoom.enable();
+  }
+
+  const handleDelete = () => {
+    submit(null, { method: "delete" });
+  };
+  
   return (
-    <>
-      <div className="flex justify-between">
-        <h2>
-          {number} <span className="text-slate-500">({name})</span>
-        </h2>
-        <Button icon={<SettingOutlined />}>Настройки</Button>
+    <div
+      className="relative grow h-2/3 bg-slate-100/90 rounded-lg shadow-md cursor-default"
+      onMouseOver={handleMouseOver}
+      onMouseOut={handleMouseOut}
+    >
+      <div className="overflow-auto py-8 p-10" onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
+        <div className="flex justify-between mb-2">
+          <h2 className="m-0">
+            {number} <span className="text-slate-400 font-normal">({name})</span>
+          </h2>
+          <Space>
+            <Button icon={<SettingOutlined />} onClick={() => navigate(`/devices/${id}/edit`)}>
+              Настройки
+            </Button>
+            <Popconfirm
+              title="Удалить устройство"
+              description="Вы уверены что хотите удалить это устройство?"
+              okText="Да"
+              cancelText="Нет"
+              onConfirm={handleDelete}
+            >
+              <Button icon={<DeleteOutlined />} danger>
+                Удалить
+              </Button>
+            </Popconfirm>
+          </Space>
+        </div>
+        <p>
+          <b>Тип:</b> {deviceTypes[type]}
+        </p>
+        <p>
+          <b>Координаты:</b> {latitude}, {longitude}
+        </p>
+        <Row gutter={[5, 5]}>
+          <Col span={6}>
+            <Box>
+              <Liquid height={250} {...liquidConfig} />
+            </Box>
+          </Col>
+          <Col span={18}>
+            <Box>
+              <Line height={250} {...lineConfig} />
+            </Box>
+          </Col>
+          <Col span={6}>
+            <Box>
+              <Pie height={250} {...pieConfig} />
+            </Box>
+          </Col>
+          <Col span={18}>
+            <Box>
+              <Column height={250} {...columnConfig} />
+            </Box>
+          </Col>
+        </Row>
       </div>
-      <p>
-        <b>Тип:</b> {deviceTypes[type]}
-      </p>
-      <p>
-        <b>Координаты:</b> {latitude}, {longitude}
-      </p>
-      <Row gutter={[5, 5]}>
-        <Col span={6}>
-          <Box>
-            <Liquid height={250} {...liquidConfig} />
-          </Box>
-        </Col>
-        <Col span={18}>
-          <Box>
-            <Line height={250} {...lineConfig} />
-          </Box>
-        </Col>
-        <Col span={6}>
-          <Box>
-            <Pie height={250} {...pieConfig} />
-          </Box>
-        </Col>
-        <Col span={18}>
-          <Box>
-            <Column height={250} {...columnConfig} />
-          </Box>
-        </Col>
-      </Row>
-    </>
+      <Button
+        shape="circle"
+        icon={<CloseOutlined />}
+        className="absolute right-0 top-[-40px]"
+        onClick={() => navigate("/")}
+      />
+    </div>
   );
 }

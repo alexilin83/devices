@@ -20,7 +20,7 @@ export default function Navigation() {
           label: <NavLink to={route[1]}>{route[0]}</NavLink>,
         };
       })}
-      className="ml-5"
+      className="ml-5 font-bold"
     />
   );
 }
