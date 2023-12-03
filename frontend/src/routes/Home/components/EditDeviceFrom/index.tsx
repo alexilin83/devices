@@ -1,31 +1,25 @@
-import { Form, Input, Modal, Select } from "antd";
-import { useLoaderData, useNavigate, useSubmit, ActionFunctionArgs, redirect } from "react-router-dom";
+import { Button, Form, Input, Select } from "antd";
+import { useLoaderData, useSubmit, ActionFunctionArgs } from "react-router-dom";
 import { updateDevice } from "../../../../common/actions";
+import { Device } from "../../../../common/types";
 
-type FieldType = {
-  number: number;
-  name: string;
-  type: "sensor" | "hub";
-  longitude: number;
-  latitude: number;
-};
+type FieldType = Omit<Device, "_id, address, battery, signal">;
 
 export async function action(data: ActionFunctionArgs) {
-  await updateDevice(data);
-  return redirect(`/`);
+  const device = await updateDevice(data);
+  return device;
 }
 
 export default function EditDeviceForm() {
-  const device = useLoaderData();
+  const device = useLoaderData() as Device;
 
-  const navigate = useNavigate();
-
-  const [form] = Form.useForm();
   const submit = useSubmit();
 
-  if (!device) return false;
-
-  const initialValues = { ...device };
+  const initialValues = {
+    ...device,
+    latitude: device.latitude || "",
+    longitude: device.latitude || "",
+  };
 
   const typeOptions = [
     {
@@ -38,25 +32,20 @@ export default function EditDeviceForm() {
     },
   ];
 
+  const handleSubmit = (values: FieldType) => {
+    submit(values, { method: "patch" });
+  };
+
   return (
-    <Modal
-      open
-      title="Редактировать устройство"
-      cancelText="Отменить"
-      okText="Сохранить"
-      onOk={() => {
-        form
-          .validateFields()
-          .then((values) => {
-            submit(values, { method: "patch" });
-          })
-          .catch((info) => {
-            console.log("Validate Failed:", info);
-          });
-      }}
-      onCancel={() => navigate('/')}
-    >
-      <Form form={form} initialValues={initialValues} layout="vertical">
+    <>
+      <h2>Редактирование устройства "{device.number}"</h2>
+      <Form
+        initialValues={initialValues}
+        labelCol={{ span: 4 }}
+        wrapperCol={{ span: 16 }}
+        style={{ maxWidth: 600 }}
+        onFinish={handleSubmit}
+      >
         <Form.Item<FieldType> label="Номер" name="number" rules={[{ required: true }]}>
           <Input />
         </Form.Item>
@@ -72,7 +61,12 @@ export default function EditDeviceForm() {
         <Form.Item<FieldType> label="Широта" name="latitude">
           <Input />
         </Form.Item>
+        <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
+          <Button type="primary" htmlType="submit">
+            Сохранить
+          </Button>
+        </Form.Item>
       </Form>
-    </Modal>
+    </>
   );
 }
