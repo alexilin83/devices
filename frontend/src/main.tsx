@@ -1,19 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { ConfigProvider, Empty } from "antd";
+import { ConfigProvider } from "antd";
 import theme, { validateMessages } from "../src/theme";
 import Layout from "./common/components/Layout";
 import ErrorPage from "./routes/Error";
-import HomePage, { action as createDeviceAction, loader as deviceLoader } from "./routes/Home";
-import DeviceInfo, { action as deleteDeviceAction } from "./routes/Home/components/DeviceInfo";
-import DeviceError from "./routes/Home/components/DeviceError";
-import EditDeviceForm, { action as updateDeviceAction } from "./routes/Home/components/EditDeviceFrom";
+import MapPage, { loader as devicesLoader } from "./routes/Map";
+import DeviceInfo, { loader as deviceLoader, action as deleteDeviceAction } from "./routes/Map/components/DeviceInfo";
+import DeviceError from "./routes/Map/components/DeviceError";
+import CreateDevice, { action as createDeviceAction } from "./routes/CreateDevice";
+import EditDevice, { action as updateDeviceAction } from "./routes/EditDevice";
 import SettingsPage from "./routes/Settings";
-import { getDevices } from "./common/actions";
 import "antd/dist/reset.css";
 import "./index.css";
-import MapContent from "./routes/Home/components/MapContent";
 
 const router = createBrowserRouter([
   {
@@ -23,30 +22,28 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <HomePage />,
-        loader: getDevices,
-        action: createDeviceAction,
+        element: <MapPage />,
+        loader: devicesLoader,
         children: [
           {
             path: "/devices/:id",
-            element: <MapContent />,
-            children: [
-              {
-                path: "/devices/:id",
-                element: <DeviceInfo />,
-                errorElement: <DeviceError />,
-                loader: deviceLoader,
-                action: deleteDeviceAction,
-              },
-              {
-                path: "/devices/:id/edit",
-                element: <EditDeviceForm />,
-                loader: deviceLoader,
-                action: updateDeviceAction,
-              },
-            ]
+            element: <DeviceInfo />,
+            errorElement: <DeviceError />,
+            loader: deviceLoader,
+            action: deleteDeviceAction,
           },
         ],
+      },
+      {
+        path: "/devices/create",
+        element: <CreateDevice />,
+        action: createDeviceAction,
+      },
+      {
+        path: "/devices/:id/edit",
+        element: <EditDevice />,
+        loader: deviceLoader,
+        action: updateDeviceAction,
       },
       {
         path: "/settings",
